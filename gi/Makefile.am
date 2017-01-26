@@ -133,6 +133,8 @@ _gi_la_LIBADD = \
 	$(FFI_LIBS)
 _gi_la_LDFLAGS = \
 	$(extension_ldflags) \
+    $(WARN_LDFLAGS) \
+    $(AM_LDFLAGS) \
 	-export-symbols-regex "init_gi|PyInit__gi"
 
 if ENABLE_CAIRO
@@ -154,6 +156,8 @@ _gi_cairo_la_LIBADD = \
 	$(PYCAIRO_LIBS)
 _gi_cairo_la_LDFLAGS = \
 	$(extension_ldflags) \
+    $(WARN_LDFLAGS) \
+    $(AM_LDFLAGS) \
 	-export-symbols-regex "init_gi_cairo|PyInit__gi_cairo"
 
 

@@ -6,9 +6,7 @@ import re
 import subprocess
 import sys
 
-from distutils.command.build import build as orig_build
 from setuptools.command.build_ext import build_ext as orig_build_ext
-from setuptools.command.build_py import build_py as orig_build_py
 from setuptools import setup, Extension
 
 
@@ -36,10 +34,7 @@ def makedirs(dirpath):
         raise
 
 
-class Build(orig_build):
-    """Dummy version of distutils build which runs an Autotools build system
-    instead.
-    """
+class BuildExt(orig_build_ext):
     def run(self):
         srcdir = os.getcwd()
         builddir = os.path.join(srcdir, self.build_temp)
@@ -52,6 +47,7 @@ class Build(orig_build):
         subprocess.check_call([
                 configure,
                 'PYTHON=%s' % sys.executable,
+                '--enable-compile-warnings=yes',
                 # Put the documentation, etc. out of the way: we only want
                 # the Python code and extensions
                 '--prefix=' + os.path.join(builddir, 'prefix'),
@@ -63,16 +59,6 @@ class Build(orig_build):
         ]
         subprocess.check_call(['make', '-C', builddir] + make_args)
         subprocess.check_call(['make', '-C', builddir, 'install'] + make_args)
-
-
-class BuildExt(orig_build_ext):
-    def run(self):
-        pass
-
-
-class BuildPy(orig_build_py):
-    def run(self):
-        pass
 
 
 setup(
@@ -98,8 +84,6 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     cmdclass={
-        'build': Build,
-        'build_py': BuildPy,
         'build_ext': BuildExt,
     },
 )

@@ -126,7 +126,7 @@ fi
 
 AC_MSG_CHECKING([for PySignal_SetWakeupFd in Python.h])
 old_CPPFLAGS=$CPPFLAGS
-CPPFLAGS="-Wall -Werror $PYTHON_INCLUDES"
+CPPFLAGS="$PYTHON_INCLUDES"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <Python.h>]], [[PySignal_SetWakeupFd(0);]])],
                   [setwakeupfd_ok=yes],[setwakeupfd_ok=no])
 AC_MSG_RESULT($setwakeupfd_ok)
@@ -228,7 +228,8 @@ AC_SUBST(INTROSPECTION_SCANNER)
 AC_SUBST(INTROSPECTION_COMPILER)
 
 # compiler warnings, errors, required cflags, and code coverage support
-GNOME_COMPILE_WARNINGS([maximum], [-Wno-error=missing-prototypes])
+AX_COMPILER_FLAGS
+
 AC_MSG_CHECKING(for Gnome code coverage support)
 m4_ifdef([GNOME_CODE_COVERAGE],
          [AC_MSG_RESULT(yes)
@@ -239,7 +240,6 @@ m4_ifdef([GNOME_CODE_COVERAGE],
           enable_code_coverage="no"])
 
 if test "x$GCC" = "xyes"; then
-  JH_ADD_CFLAG([-Wall])
   JH_ADD_CFLAG([-Werror=unused-variable])
   JH_ADD_CFLAG([-fno-strict-aliasing])
   JH_ADD_CFLAG([-Werror=declaration-after-statement])

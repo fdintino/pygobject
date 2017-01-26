@@ -11,7 +11,7 @@ dist_libgimarshallingtests_la_SOURCES = \
 	$(srcdir)/gimarshallingtestsextra.h
 
 libgimarshallingtests_la_CFLAGS = $(GLIB_CFLAGS)
-libgimarshallingtests_la_LDFLAGS = -module -avoid-version $(GLIB_LIBS) -no-undefined
+libgimarshallingtests_la_LDFLAGS = -module -avoid-version $(WARN_LDFLAGS) $(AM_LDFLAGS) $(GLIB_LIBS) -no-undefined
 
 # This is a hack to make sure a shared library is built
 libgimarshallingtests.la: $(libgimarshallingtests_la_OBJECTS) $(libgimarshallingtests_la_DEPENDENCIES)
@@ -36,7 +36,7 @@ check_LTLIBRARIES += libregress.la
 test_typelibs += Regress-1.0.typelib
 nodist_libregress_la_SOURCES = $(GI_DATADIR)/tests/regress.c $(GI_DATADIR)/tests/regress.h
 libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
-libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS) -no-undefined
+libregress_la_LDFLAGS = -module -avoid-version $(WARN_LDFLAGS) $(AM_LDFLAGS) $(GIO_LIBS) $(CAIRO_LIBS) -no-undefined
 
 libregress.la: $(libregress_la_OBJECTS) $(libregress_la_DEPENDENCIES)
 	$(AM_V_GEN) $(LINK) -rpath $(pkgpyexecdir) $(libregress_la_LDFLAGS) $(libregress_la_OBJECTS) $(libregress_la_LIBADD) $(LIBS)
@@ -64,7 +64,7 @@ CLEANFILES += Regress-1.0.gir Regress-1.0.typelib GIMarshallingTests-1.0.gir GIM
 check_LTLIBRARIES += testhelper.la
 
 testhelper_la_CFLAGS = -I$(top_srcdir)/gi $(PYTHON_INCLUDES) $(GLIB_CFLAGS)
-testhelper_la_LDFLAGS = -module -avoid-version -no-undefined $(PYTHON_LIBS)
+testhelper_la_LDFLAGS = -module -avoid-version -no-undefined $(WARN_LDFLAGS) $(AM_LDFLAGS) $(PYTHON_LIBS)
 testhelper_la_LIBADD = $(GLIB_LIBS)
 testhelper_la_SOURCES = \
 	testhelpermodule.c \
